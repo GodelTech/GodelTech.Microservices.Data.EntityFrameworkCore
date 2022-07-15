@@ -5,102 +5,101 @@ using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Models.Fake;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Controllers
+namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Controllers;
+
+[Route("fakes")]
+[ApiController]
+public class FakeController : ControllerBase
 {
-    [Route("fakes")]
-    [ApiController]
-    public class FakeController : ControllerBase
+    private static readonly IReadOnlyList<FakeModel> Items = new List<FakeModel>
     {
-        private static readonly IReadOnlyList<FakeModel> Items = new List<FakeModel>
+        new FakeModel(),
+        new FakeModel
         {
-            new FakeModel(),
-            new FakeModel
-            {
-                Id = 1,
-                Title = "Test Title"
-            }
+            Id = 1,
+            Title = "Test Title"
+        }
+    };
+
+    [HttpGet]
+    [ProducesResponseType(typeof(IList<FakeModel>), StatusCodes.Status200OK)]
+    public IActionResult GetList()
+    {
+        return Ok(Items);
+    }
+
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(FakeModel), StatusCodes.Status200OK)]
+    public IActionResult Get(int id)
+    {
+        var item = Items.FirstOrDefault(x => x.Id == id);
+
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(item);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(FakeModel), StatusCodes.Status201Created)]
+    public IActionResult Post([FromBody] FakePostModel model)
+    {
+        if (model == null) throw new ArgumentNullException(nameof(model));
+
+        var item = new FakeModel
+        {
+            Id = Items.Max(x => x.Id) + 1,
+            Title = model.Title
         };
 
-        [HttpGet]
-        [ProducesResponseType(typeof(IList<FakeModel>), StatusCodes.Status200OK)]
-        public IActionResult GetList()
+        return CreatedAtAction(
+            nameof(Get),
+            new { id = item.Id },
+            item
+        );
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public IActionResult Put(int id, FakePutModel model)
+    {
+        if (model == null) throw new ArgumentNullException(nameof(model));
+
+        if (id != model.Id)
         {
-            return Ok(Items);
+            return BadRequest();
         }
 
-        [HttpGet("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(FakeModel), StatusCodes.Status200OK)]
-        public IActionResult Get(int id)
+        var item = Items.FirstOrDefault(x => x.Id == id);
+
+        if (item == null)
         {
-            var item = Items.FirstOrDefault(x => x.Id == id);
-
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(item);
+            return NotFound();
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(FakeModel), StatusCodes.Status201Created)]
-        public IActionResult Post([FromBody] FakePostModel model)
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult Delete(int id)
+    {
+        var item = Items.FirstOrDefault(x => x.Id == id);
+
+        // delete functional here
+        var result = item != null;
+
+        if (!result)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-
-            var item = new FakeModel
-            {
-                Id = Items.Max(x => x.Id) + 1,
-                Title = model.Title
-            };
-
-            return CreatedAtAction(
-                nameof(Get),
-                new { id = item.Id },
-                item
-            );
+            return NotFound();
         }
 
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult Put(int id, FakePutModel model)
-        {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-
-            if (id != model.Id)
-            {
-                return BadRequest();
-            }
-
-            var item = Items.FirstOrDefault(x => x.Id == id);
-
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Delete(int id)
-        {
-            var item = Items.FirstOrDefault(x => x.Id == id);
-
-            // delete functional here
-            var result = item != null;
-
-            if (!result)
-            {
-                return NotFound();
-            }
-
-            return Ok();
-        }
+        return Ok();
     }
 }
