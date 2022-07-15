@@ -1,8 +1,9 @@
-﻿namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Models.Fake;
-
-public class FakeModel
+﻿namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Models.Fake
 {
-    public int Id { get; set; }
+    public class FakeModel
+    {
+        public int Id { get; set; }
 
-    public string Title { get; set; }
+        public string Title { get; set; }
+    }
 }
