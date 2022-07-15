@@ -1,0 +1,8 @@
+{
+  "stryker-config": {
+    "test-projects": [
+      "../../test/GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests/GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests.csproj",
+      "../../test/GodelTech.Microservices.Data.EntityFrameworkCore.Tests/GodelTech.Microservices.Data.EntityFrameworkCore.Tests.csproj"
+    ]
+  }
+}
