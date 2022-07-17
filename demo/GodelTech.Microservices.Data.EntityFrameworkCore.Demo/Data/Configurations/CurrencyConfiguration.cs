@@ -6,27 +6,26 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data.Configurations
 {
-    public class BankConfiguration : EntityTypeConfiguration<BankEntity, Guid>
+    public class CurrencyConfiguration : EntityTypeConfiguration<CurrencyEntity, int>
     {
-        public BankConfiguration(string schemaName)
+        public CurrencyConfiguration(string schemaName)
             : base(schemaName)
         {
 
         }
 
-        public override void Configure(EntityTypeBuilder<BankEntity> builder)
+        public override void Configure(EntityTypeBuilder<CurrencyEntity> builder)
         {
             if (builder == null) throw new ArgumentNullException(nameof(builder));
 
             // Table
-            builder.ToTable("Bank", SchemaName);
+            builder.ToTable("Currency", SchemaName);
 
             // Primary Key
             builder.HasKey(x => x.Id);
 
             // Properties
-            builder.Property(x => x.Id).HasDefaultValueSql("newsequentialid()");
-            builder.Property(x => x.Name).HasColumnType("nvarchar(256)").IsRequired();
+            builder.Property(x => x.AlphabeticCode).HasColumnType("nvarchar(3)").IsRequired();
         }
     }
 }

@@ -20,6 +20,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new BankConfiguration(SchemaName));
+            modelBuilder.ApplyConfiguration(new CurrencyConfiguration(SchemaName));
         }
     }
 }

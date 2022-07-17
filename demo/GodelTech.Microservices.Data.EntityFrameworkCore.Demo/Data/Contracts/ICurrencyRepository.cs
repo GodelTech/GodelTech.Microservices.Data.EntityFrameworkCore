@@ -4,10 +4,9 @@ using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data.Entities;
 
 namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data.Contracts
 {
-    public interface ICurrencyExchangeRateUnitOfWork : IUnitOfWork
+    public interface ICurrencyRepository : IRepository<CurrencyEntity, int>
     {
-        IRepository<BankEntity, Guid> BankRepository { get; }
-
-        ICurrencyRepository CurrencyRepository { get; }
+        [Obsolete("Insert operation is not allowed.", true)]
+        new CurrencyEntity Insert(CurrencyEntity entity);
     }
 }
