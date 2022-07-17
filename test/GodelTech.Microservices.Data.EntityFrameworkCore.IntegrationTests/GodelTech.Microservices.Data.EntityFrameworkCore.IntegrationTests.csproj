@@ -11,6 +11,14 @@
     <ProjectGuid>{00000000-0000-0000-0000-000000000021}</ProjectGuid>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.27" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.7" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="3.1.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\GodelTech.Microservices.Data.EntityFrameworkCore\GodelTech.Microservices.Data.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\demo\GodelTech.Microservices.Data.EntityFrameworkCore.Demo\GodelTech.Microservices.Data.EntityFrameworkCore.Demo.csproj" />
   </ItemGroup>
 
 </Project>
