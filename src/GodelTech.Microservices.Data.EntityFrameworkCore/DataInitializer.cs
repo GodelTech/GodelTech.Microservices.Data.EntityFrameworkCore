@@ -18,7 +18,9 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
     /// <summary>
     /// Data initializer.
     /// </summary>
+#pragma warning disable S2436 // Reduce the number of generic parameters in the 'DataInitializer' class to no more than the 2 authorized.
     public class DataInitializer<TDbContext, TIUnitOfWork, TUnitOfWork> : MicroserviceInitializerBase
+#pragma warning restore S2436 // Reduce the number of generic parameters in the 'DataInitializer' class to no more than the 2 authorized.
         where TDbContext : DbContext
         where TIUnitOfWork : IUnitOfWork
         where TUnitOfWork : UnitOfWork<TDbContext>, IUnitOfWork
@@ -104,7 +106,9 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
         /// <typeparam name="TEntity">The type of the T entity.</typeparam>
         /// <typeparam name="TKey">The type of the T key.</typeparam>
         /// <returns>DataInitializer.</returns>
+#pragma warning disable S2436 // Reduce the number of generic parameters in the 'DataInitializer.WithRepository' method to no more than the 3 authorized.
         public DataInitializer<TDbContext, TIUnitOfWork, TUnitOfWork> WithRepository<TIRepository, TRepository, TEntity, TKey>()
+#pragma warning restore S2436 // Reduce the number of generic parameters in the 'DataInitializer.WithRepository' method to no more than the 3 authorized.
             where TIRepository : IRepository<TEntity, TKey>
             where TRepository : Repository<TEntity, TKey>, TIRepository
             where TEntity : class, IEntity<TKey>
