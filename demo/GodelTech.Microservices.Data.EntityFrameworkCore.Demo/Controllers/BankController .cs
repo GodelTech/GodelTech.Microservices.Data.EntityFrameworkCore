@@ -1,23 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Models.Fake;
+using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data.Contracts;
+using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Models.Bank;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Controllers
 {
-    [Route("fakes")]
+    [Route("banks")]
     [ApiController]
-    public class FakeController : ControllerBase
+    public class BankController : ControllerBase
     {
-        private static readonly IReadOnlyList<FakeModel> Items = new List<FakeModel>
+        private readonly ICurrencyExchangeRateUnitOfWork _unitOfWork;
+
+        private static readonly IReadOnlyList<BankModel> Items = new List<BankModel>
         {
-            new FakeModel(), new FakeModel {Id = 1, Title = "Test Title"}
+            new BankModel(), new BankModel {Id = 1, Name = "Test Title"}
         };
 
+        public BankController(ICurrencyExchangeRateUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
         [HttpGet]
-        [ProducesResponseType(typeof(IList<FakeModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IList<BankModel>), StatusCodes.Status200OK)]
         public IActionResult GetList()
         {
             return Ok(Items);
@@ -25,7 +33,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Controllers
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(FakeModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BankModel), StatusCodes.Status200OK)]
         public IActionResult Get(int id)
         {
             var item = Items.FirstOrDefault(x => x.Id == id);
@@ -39,12 +47,12 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(FakeModel), StatusCodes.Status201Created)]
-        public IActionResult Post([FromBody] FakePostModel model)
+        [ProducesResponseType(typeof(BankModel), StatusCodes.Status201Created)]
+        public IActionResult Post([FromBody] BankPostModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
-            var item = new FakeModel { Id = Items.Max(x => x.Id) + 1, Title = model.Title };
+            var item = new BankModel { Id = Items.Max(x => x.Id) + 1, Name = model.Name };
 
             return CreatedAtAction(
                 nameof(Get),
@@ -57,7 +65,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult Put(int id, FakePutModel model)
+        public IActionResult Put(int id, BankPutModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
