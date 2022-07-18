@@ -86,15 +86,9 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
         /// <inheritdoc />
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (app == null) throw new ArgumentNullException(nameof(app));
-
             if (_options.EnableDatabaseMigration)
             {
-                var dbContextFactory = app.ApplicationServices.GetRequiredService<IDbContextFactory<TDbContext>>();
-
-                using var dbContext = dbContextFactory.CreateDbContext();
-
-                dbContext.Database.Migrate();
+                MigrateDatabase(app);
             }
         }
 
@@ -144,6 +138,21 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
             _sqlServerOptionsAction?.Invoke(options);
 
             options.EnableRetryOnFailure();
+        }
+
+        /// <summary>
+        /// Migrate database.
+        /// </summary>
+        /// <param name="app">Application builder.</param>
+        protected virtual void MigrateDatabase(IApplicationBuilder app)
+        {
+            if (app == null) throw new ArgumentNullException(nameof(app));
+
+            var dbContextFactory = app.ApplicationServices.GetRequiredService<IDbContextFactory<TDbContext>>();
+
+            using var dbContext = dbContextFactory.CreateDbContext();
+
+            dbContext.Database.Migrate();
         }
     }
 }
