@@ -34,6 +34,30 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
         public ITestOutputHelper Output { get; set; }
         public CurrencyExchangeRateDbContext DbContext { get; }
 
+        // https://github.com/dotnet/aspnetcore/issues/37680
+        protected override IHost CreateHost(IHostBuilder builder)
+        {
+            if (builder == null) throw new ArgumentNullException(nameof(builder));
+
+            builder.ConfigureHostConfiguration(
+                configurationBuilder =>
+                {
+                    configurationBuilder
+                        .AddInMemoryCollection(
+                            new KeyValuePair<string, string>[]
+                            {
+                                new KeyValuePair<string, string>(
+                                    "DataInitializerOptions:EnableDatabaseMigration",
+                                    false.ToString()
+                                )
+                            }
+                        );
+                }
+            );
+
+            return base.CreateHost(builder);
+        }
+
         protected override IHostBuilder CreateHostBuilder()
         {
             var builder = base.CreateHostBuilder();
