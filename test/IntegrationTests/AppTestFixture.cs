@@ -48,12 +48,11 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
             return builder;
         }
 
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        protected override IHost CreateHost(IHostBuilder builder)
         {
             if (builder == null) throw new ArgumentNullException(nameof(builder));
 
             builder
-                .UseSetting("https_port", "8080")
                 .ConfigureAppConfiguration(
                     configurationBuilder =>
                     {
@@ -92,6 +91,16 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                         );
                     }
                 );
+
+            return base.CreateHost(builder);
+        }
+
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            if (builder == null) throw new ArgumentNullException(nameof(builder));
+
+            builder
+                .UseSetting("https_port", "8080");
         }
 
         private void ConfigureDbContextOptionsBuilder(DbContextOptionsBuilder builder)
