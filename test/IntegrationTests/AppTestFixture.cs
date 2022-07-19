@@ -5,7 +5,6 @@ using GodelTech.Microservices.Data.EntityFrameworkCore.Demo;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
