@@ -70,7 +70,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                             );
                     }
                 )
-                .ConfigureTestServices(
+                .ConfigureServices(
                     services =>
                     {
                         var factoryDescriptor = services.First(x =>
