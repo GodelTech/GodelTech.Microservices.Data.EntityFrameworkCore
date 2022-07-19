@@ -44,6 +44,13 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo
             yield return new GenericInitializer(services => services.AddTransient<IBankService, BankService>());
 
             yield return new ApiInitializer();
+
+            yield return new GenericInitializer(
+                null,
+                (app, _) => app.UseEndpoints(
+                    endpoints => endpoints.MapHealthChecks("/health")
+                )
+            );
         }
     }
 }

@@ -1,5 +1,8 @@
 [*.{cs,vb}]
 
+# CA2007: Do not directly await a Task
+dotnet_diagnostic.CA2007.severity = none
+
 # CA1014: Mark assemblies with CLSCompliantAttribute
 dotnet_diagnostic.CA1014.severity = none
 
