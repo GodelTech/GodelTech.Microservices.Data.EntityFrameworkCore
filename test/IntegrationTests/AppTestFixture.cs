@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -53,21 +55,38 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
 
             builder
                 .UseSetting("https_port", "8080")
+                .ConfigureAppConfiguration(
+                    configurationBuilder =>
+                    {
+                        configurationBuilder
+                            .AddInMemoryCollection(
+                                new KeyValuePair<string, string>[]
+                                {
+                                    new KeyValuePair<string, string>(
+                                        "DataInitializerOptions:EnableDatabaseMigration",
+                                        false.ToString()
+                                    )
+                                }
+                            );
+                    }
+                )
                 .ConfigureTestServices(
                     services =>
                     {
-                        var factoryDescriptor = services.First(x => x.ServiceType == typeof(IDbContextFactory<CurrencyExchangeRateDbContext>));
+                        var factoryDescriptor = services.First(x =>
+                            x.ServiceType == typeof(IDbContextFactory<CurrencyExchangeRateDbContext>));
+#pragma warning disable EF1001 // Internal EF Core API usage.
                         var factorySourceDescriptor = services.First(x => x.ServiceType == typeof(IDbContextFactorySource<CurrencyExchangeRateDbContext>));
+#pragma warning restore EF1001 // Internal EF Core API usage.
                         var genericOptionsDescriptor = services.First(x => x.ServiceType == typeof(DbContextOptions));
-                        var optionsDescriptor = services.First(x => x.ServiceType == typeof(DbContextOptions<CurrencyExchangeRateDbContext>));
-                        //var contextDescriptor = services.First(x => x.ServiceType == typeof(CurrencyExchangeRateDbContext));
+                        var optionsDescriptor = services.First(x =>
+                            x.ServiceType == typeof(DbContextOptions<CurrencyExchangeRateDbContext>));
 
                         // remove IDbContextFactory to allow override
                         services.Remove(factoryDescriptor);
                         services.Remove(factorySourceDescriptor);
                         services.Remove(genericOptionsDescriptor);
                         services.Remove(optionsDescriptor);
-                        //services.Remove(contextDescriptor);
 
                         services.AddDbContextFactory<CurrencyExchangeRateDbContext>(
                             ConfigureDbContextOptionsBuilder
