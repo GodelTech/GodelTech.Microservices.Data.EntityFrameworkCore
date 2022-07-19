@@ -1,8 +1,11 @@
-﻿namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Models.Bank
+﻿using System;
+using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Business.Contracts;
+
+namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Models.Bank
 {
-    public class BankPutModel
+    public class BankPutModel : IBankEditDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
     }

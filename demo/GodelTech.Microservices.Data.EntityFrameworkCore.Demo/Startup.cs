@@ -4,11 +4,14 @@ using GodelTech.Data;
 using GodelTech.Data.EntityFrameworkCore;
 using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Core.Mvc;
+using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Business;
+using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Business.Contracts;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data.Contracts;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo
@@ -37,6 +40,8 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo
                 )
                 .WithRepository<IRepository<BankEntity, Guid>, Repository<BankEntity, Guid>, BankEntity, Guid>()
                 .WithRepository<ICurrencyRepository, CurrencyRepository, CurrencyEntity, int>();
+
+            yield return new GenericInitializer(services => services.AddTransient<IBankService, BankService>());
 
             yield return new ApiInitializer();
         }

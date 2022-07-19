@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Models.Bank
+namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Business.Models
 {
-    public class BankModel
+    public class BankDto
     {
         public Guid Id { get; set; }
 

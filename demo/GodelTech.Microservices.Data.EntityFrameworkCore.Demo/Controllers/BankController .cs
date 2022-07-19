@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data.Contracts;
+using System.Threading.Tasks;
+using AutoMapper;
+using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Business.Contracts;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Models.Bank;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,50 +13,54 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Controllers
     [ApiController]
     public class BankController : ControllerBase
     {
-        private readonly ICurrencyExchangeRateUnitOfWork _unitOfWork;
+        private readonly IBankService _bankService;
+        private readonly IMapper _mapper;
 
-        private static readonly IReadOnlyList<BankModel> Items = new List<BankModel>
+        public BankController(IBankService bankService, IMapper mapper)
         {
-            new BankModel(), new BankModel {Id = 1, Name = "Test Title"}
-        };
-
-        public BankController(ICurrencyExchangeRateUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
+            _bankService = bankService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(IList<BankModel>), StatusCodes.Status200OK)]
-        public IActionResult GetList()
+        public async Task<IActionResult> GetListAsync()
         {
-            return Ok(Items);
+            return Ok(
+                _mapper.Map<IList<BankModel>>(
+                    await _bankService.GetListAsync()
+                )
+            );
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
+        [ActionName(nameof(GetAsync))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(BankModel), StatusCodes.Status200OK)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetAsync(Guid id)
         {
-            var item = Items.FirstOrDefault(x => x.Id == id);
+            var item = await _bankService.GetAsync(id);
 
             if (item == null)
             {
                 return NotFound();
             }
 
-            return Ok(item);
+            return Ok(
+                _mapper.Map<BankModel>(item)
+            );
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(BankModel), StatusCodes.Status201Created)]
-        public IActionResult Post([FromBody] BankPostModel model)
+        public async Task<IActionResult> PostAsync([FromBody] BankPostModel model)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-
-            var item = new BankModel { Id = Items.Max(x => x.Id) + 1, Name = model.Name };
+            var item = _mapper.Map<BankModel>(
+                await _bankService.AddAsync(model)
+            );
 
             return CreatedAtAction(
-                nameof(Get),
+                nameof(GetAsync),
                 new { id = item.Id },
                 item
             );
@@ -65,16 +70,21 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult Put(int id, BankPutModel model)
+        public Task<IActionResult> PutAsync(Guid id, BankPutModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
+            return PutInternalAsync(id, model);
+        }
+
+        private async Task<IActionResult> PutInternalAsync(Guid id, BankPutModel model)
+        {
             if (id != model.Id)
             {
                 return BadRequest();
             }
 
-            var item = Items.FirstOrDefault(x => x.Id == id);
+            var item = await _bankService.EditAsync(model);
 
             if (item == null)
             {
@@ -87,12 +97,9 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            var item = Items.FirstOrDefault(x => x.Id == id);
-
-            // delete functional here
-            var result = item != null;
+            var result = await _bankService.DeleteAsync(id);
 
             if (!result)
             {
