@@ -45,29 +45,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                 }
             );
 
-            return builder;
-        }
-
-        protected override IHost CreateHost(IHostBuilder builder)
-        {
-            if (builder == null) throw new ArgumentNullException(nameof(builder));
-
             builder
-                .ConfigureAppConfiguration(
-                    configurationBuilder =>
-                    {
-                        configurationBuilder
-                            .AddInMemoryCollection(
-                                new KeyValuePair<string, string>[]
-                                {
-                                    new KeyValuePair<string, string>(
-                                        "DataInitializerOptions:EnableDatabaseMigration",
-                                        false.ToString()
-                                    )
-                                }
-                            );
-                    }
-                )
                 .ConfigureServices(
                     services =>
                     {
@@ -92,7 +70,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                     }
                 );
 
-            return base.CreateHost(builder);
+            return builder;
         }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -100,7 +78,22 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
             if (builder == null) throw new ArgumentNullException(nameof(builder));
 
             builder
-                .UseSetting("https_port", "8080");
+                .UseSetting("https_port", "8080")
+                .ConfigureAppConfiguration(
+                    configurationBuilder =>
+                    {
+                        configurationBuilder
+                            .AddInMemoryCollection(
+                                new KeyValuePair<string, string>[]
+                                {
+                                    new KeyValuePair<string, string>(
+                                        "DataInitializerOptions:EnableDatabaseMigration",
+                                        false.ToString()
+                                    )
+                                }
+                            );
+                    }
+                );
         }
 
         private void ConfigureDbContextOptionsBuilder(DbContextOptionsBuilder builder)
