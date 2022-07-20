@@ -7,15 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{386262FF-243
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C5CCD298-EC5B-41EF-8A89-668AAFF45130}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Data.EntityFrameworkCore", "src\GodelTech.Microservices.Data.EntityFrameworkCore\GodelTech.Microservices.Data.EntityFrameworkCore.csproj", "{E9CE1DED-978E-4C34-9C77-908AB46C6260}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Data.EntityFrameworkCore", "src\GodelTech.Microservices.Data.EntityFrameworkCore\GodelTech.Microservices.Data.EntityFrameworkCore.csproj", "{00000000-0000-0000-0000-000000000010}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Data.EntityFrameworkCore.Tests", "test\GodelTech.Microservices.Data.EntityFrameworkCore.Tests\GodelTech.Microservices.Data.EntityFrameworkCore.Tests.csproj", "{B83A1DFC-814F-4371-B182-071997021C68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Data.EntityFrameworkCore.Tests", "test\GodelTech.Microservices.Data.EntityFrameworkCore.Tests\GodelTech.Microservices.Data.EntityFrameworkCore.Tests.csproj", "{00000000-0000-0000-0000-000000000020}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{B2DB385F-DEFA-48D8-A802-C8C411D81B03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Data.EntityFrameworkCore.Demo", "demo\GodelTech.Microservices.Data.EntityFrameworkCore.Demo\GodelTech.Microservices.Data.EntityFrameworkCore.Demo.csproj", "{E02CB783-92ED-4029-8ED1-80EF16913089}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Data.EntityFrameworkCore.Demo", "demo\GodelTech.Microservices.Data.EntityFrameworkCore.Demo\GodelTech.Microservices.Data.EntityFrameworkCore.Demo.csproj", "{00000000-0000-0000-0000-000000000031}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests", "test\GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests\GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests.csproj", "{40CD5948-DCF5-46DE-BCF1-E223128132C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "test\IntegrationTests\IntegrationTests.csproj", "{00000000-0000-0000-0000-000000000021}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,31 +23,31 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E9CE1DED-978E-4C34-9C77-908AB46C6260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9CE1DED-978E-4C34-9C77-908AB46C6260}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9CE1DED-978E-4C34-9C77-908AB46C6260}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9CE1DED-978E-4C34-9C77-908AB46C6260}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B83A1DFC-814F-4371-B182-071997021C68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B83A1DFC-814F-4371-B182-071997021C68}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B83A1DFC-814F-4371-B182-071997021C68}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B83A1DFC-814F-4371-B182-071997021C68}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E02CB783-92ED-4029-8ED1-80EF16913089}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E02CB783-92ED-4029-8ED1-80EF16913089}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E02CB783-92ED-4029-8ED1-80EF16913089}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E02CB783-92ED-4029-8ED1-80EF16913089}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40CD5948-DCF5-46DE-BCF1-E223128132C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40CD5948-DCF5-46DE-BCF1-E223128132C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40CD5948-DCF5-46DE-BCF1-E223128132C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40CD5948-DCF5-46DE-BCF1-E223128132C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00000000-0000-0000-0000-000000000010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00000000-0000-0000-0000-000000000010}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00000000-0000-0000-0000-000000000020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00000000-0000-0000-0000-000000000020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00000000-0000-0000-0000-000000000031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00000000-0000-0000-0000-000000000031}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00000000-0000-0000-0000-000000000021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000021}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000021}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00000000-0000-0000-0000-000000000021}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E9CE1DED-978E-4C34-9C77-908AB46C6260} = {386262FF-2434-48A9-BC5C-6222E400E92D}
-		{B83A1DFC-814F-4371-B182-071997021C68} = {C5CCD298-EC5B-41EF-8A89-668AAFF45130}
-		{E02CB783-92ED-4029-8ED1-80EF16913089} = {B2DB385F-DEFA-48D8-A802-C8C411D81B03}
-		{40CD5948-DCF5-46DE-BCF1-E223128132C1} = {C5CCD298-EC5B-41EF-8A89-668AAFF45130}
+		{00000000-0000-0000-0000-000000000010} = {386262FF-2434-48A9-BC5C-6222E400E92D}
+		{00000000-0000-0000-0000-000000000020} = {C5CCD298-EC5B-41EF-8A89-668AAFF45130}
+		{00000000-0000-0000-0000-000000000031} = {B2DB385F-DEFA-48D8-A802-C8C411D81B03}
+		{00000000-0000-0000-0000-000000000021} = {C5CCD298-EC5B-41EF-8A89-668AAFF45130}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0A0D3F1-C575-43FB-8EBA-CE1584A3E70A}

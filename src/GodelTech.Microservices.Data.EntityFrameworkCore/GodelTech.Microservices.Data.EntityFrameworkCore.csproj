@@ -1,9 +1,53 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+    <PackageId>GodelTech.Microservices.Data.EntityFrameworkCore</PackageId>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <Authors>v.rodchenko</Authors>
+    <Company>Godel Technologies</Company>
+    <Description>Microservice initializer for GodelTech.Data.EntityFrameworkCore.</Description>
+    <Copyright>Godel Technologies 2022</Copyright>
+    <PackageLicenseUrl>https://github.com/GodelTech/GodelTech.Microservices.Data.EntityFrameworkCore/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/GodelTech/GodelTech.Microservices.Data.EntityFrameworkCore/wiki</PackageProjectUrl>
+    <PackageIconUrl>https://www.gravatar.com/avatar/839234621070de51e7b9cabd5ceee8fe?s=64</PackageIconUrl>
+    <RepositoryUrl>https://github.com/GodelTech/GodelTech.Microservices.Data.EntityFrameworkCore</RepositoryUrl>
+    <PackageTags>Microservice Entity Framework Core Data UnitOfWork Repository Entity</PackageTags>
+
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+
+    <!-- XML documentation -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!-- Source Link needs this -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{00000000-0000-0000-0000-000000000010}</ProjectGuid>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="GodelTech.Data.AutoMapper" Version="6.2.0" />
+    <PackageReference Include="GodelTech.Data.EntityFrameworkCore" Version="6.2.1" />
+    <PackageReference Include="GodelTech.Microservices.Core" Version="2.4.0" />
+
+    <!-- Source Link needs this -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
 
 </Project>
