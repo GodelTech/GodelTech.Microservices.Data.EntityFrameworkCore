@@ -45,31 +45,6 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                 }
             );
 
-            builder
-                .ConfigureServices(
-                    services =>
-                    {
-                        var factoryDescriptor = services.First(x =>
-                            x.ServiceType == typeof(IDbContextFactory<CurrencyExchangeRateDbContext>));
-#pragma warning disable EF1001 // Internal EF Core API usage.
-                        var factorySourceDescriptor = services.First(x => x.ServiceType == typeof(IDbContextFactorySource<CurrencyExchangeRateDbContext>));
-#pragma warning restore EF1001 // Internal EF Core API usage.
-                        var genericOptionsDescriptor = services.First(x => x.ServiceType == typeof(DbContextOptions));
-                        var optionsDescriptor = services.First(x =>
-                            x.ServiceType == typeof(DbContextOptions<CurrencyExchangeRateDbContext>));
-
-                        // remove IDbContextFactory to allow override
-                        services.Remove(factoryDescriptor);
-                        services.Remove(factorySourceDescriptor);
-                        services.Remove(genericOptionsDescriptor);
-                        services.Remove(optionsDescriptor);
-
-                        services.AddDbContextFactory<CurrencyExchangeRateDbContext>(
-                            ConfigureDbContextOptionsBuilder
-                        );
-                    }
-                );
-
             return builder;
         }
 
@@ -87,11 +62,36 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                                 new KeyValuePair<string, string>[]
                                 {
                                     new KeyValuePair<string, string>(
+                                        "ConnectionStrings:DefaultConnection",
+                                        $"Data Source=InMemoryDbForTesting{_guid:N};Mode=Memory;Cache=Shared"
+                                    ),
+                                    new KeyValuePair<string, string>(
                                         "DataInitializerOptions:EnableDatabaseMigration",
                                         false.ToString()
                                     )
                                 }
                             );
+                    }
+                )
+                .ConfigureServices(
+                    services =>
+                    {
+                        var factoryDescriptor = services.Single(x => x.ServiceType == typeof(IDbContextFactory<CurrencyExchangeRateDbContext>));
+#pragma warning disable EF1001 // Internal EF Core API usage.
+                        var factorySourceDescriptor = services.Single(x => x.ServiceType == typeof(IDbContextFactorySource<CurrencyExchangeRateDbContext>));
+#pragma warning restore EF1001 // Internal EF Core API usage.
+                        var genericOptionsDescriptor = services.Single(x => x.ServiceType == typeof(DbContextOptions));
+                        var optionsDescriptor = services.Single(x => x.ServiceType == typeof(DbContextOptions<CurrencyExchangeRateDbContext>));
+
+                        // remove IDbContextFactory to allow override
+                        services.Remove(factoryDescriptor);
+                        services.Remove(factorySourceDescriptor);
+                        services.Remove(genericOptionsDescriptor);
+                        services.Remove(optionsDescriptor);
+
+                        services.AddDbContextFactory<CurrencyExchangeRateDbContext>(
+                            ConfigureDbContextOptionsBuilder
+                        );
                     }
                 );
         }
