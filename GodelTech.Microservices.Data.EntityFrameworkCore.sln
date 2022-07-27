@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Dat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "test\IntegrationTests\IntegrationTests.csproj", "{00000000-0000-0000-0000-000000000021}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple", "demo\GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple\GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.csproj", "{CA62A70A-D63E-401A-8367-80E346D7B6B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{00000000-0000-0000-0000-000000000021}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00000000-0000-0000-0000-000000000021}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00000000-0000-0000-0000-000000000021}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA62A70A-D63E-401A-8367-80E346D7B6B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA62A70A-D63E-401A-8367-80E346D7B6B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA62A70A-D63E-401A-8367-80E346D7B6B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA62A70A-D63E-401A-8367-80E346D7B6B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{00000000-0000-0000-0000-000000000020} = {C5CCD298-EC5B-41EF-8A89-668AAFF45130}
 		{00000000-0000-0000-0000-000000000031} = {B2DB385F-DEFA-48D8-A802-C8C411D81B03}
 		{00000000-0000-0000-0000-000000000021} = {C5CCD298-EC5B-41EF-8A89-668AAFF45130}
+		{CA62A70A-D63E-401A-8367-80E346D7B6B4} = {B2DB385F-DEFA-48D8-A802-C8C411D81B03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0A0D3F1-C575-43FB-8EBA-CE1584A3E70A}
