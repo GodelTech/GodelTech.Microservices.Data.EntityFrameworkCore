@@ -1,17 +1,17 @@
 ﻿using System;
-using GodelTech.Data;
-using GodelTech.Data.EntityFrameworkCore;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace GodelTech.Microservices.Data.EntityFrameworkCore.Tests.Fakes
 {
-    public class FakeDataInitializer : DataInitializer<DbContext, IUnitOfWork, UnitOfWork<DbContext>>
+    public class FakeDataInitializerBase : DataInitializerBase<DbContext>
     {
-        public FakeDataInitializer(
+        public FakeDataInitializerBase(
             IConfiguration configuration,
             IHostEnvironment hostEnvironment,
             Action<DataInitializerOptions> configure = null,
@@ -19,6 +19,13 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Tests.Fakes
             : base(configuration, hostEnvironment, configure, sqlServerOptionsAction)
         {
 
+        }
+
+        public IList<Action<IServiceCollection>> ExposedConfigureServicesList => ConfigureServicesList;
+
+        public void ExposedConfigureDbContextOptionsBuilder(DbContextOptionsBuilder options)
+        {
+            base.ConfigureDbContextOptionsBuilder(options);
         }
 
         public void ExposedConfigureSqlServerDbContextOptionsBuilder(SqlServerDbContextOptionsBuilder options)
