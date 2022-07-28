@@ -40,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\demo\GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple\GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.csproj" />
     <ProjectReference Include="..\..\demo\GodelTech.Microservices.Data.EntityFrameworkCore.Demo\GodelTech.Microservices.Data.EntityFrameworkCore.Demo.csproj" />
   </ItemGroup>
 

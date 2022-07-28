@@ -33,9 +33,9 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Tests.Fakes
             base.ConfigureSqlServerDbContextOptionsBuilder(options);
         }
 
-        public void ExposedMigrateDatabase(IApplicationBuilder app)
+        protected override void MigrateDatabase(IApplicationBuilder app)
         {
-            base.MigrateDatabase(app);
+            throw new NotImplementedException();
         }
     }
 }

@@ -3,33 +3,33 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using GodelTech.Data;
+using GodelTech.Data.EntityFrameworkCore.Simple;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Business.Contracts;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Business.Models;
-using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Data.Contracts;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Data.Entities;
 
 namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Business
 {
     public class BankService : IBankService
     {
-        private readonly ICurrencyExchangeRateUnitOfWork _unitOfWork;
+        private readonly ISimpleRepository<BankEntity, Guid> _repository;
         private readonly IMapper _mapper;
 
-        public BankService(ICurrencyExchangeRateUnitOfWork unitOfWork, IMapper mapper)
+        public BankService(ISimpleRepository<BankEntity, Guid> repository, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _repository = repository;
             _mapper = mapper;
         }
 
         public async Task<IList<BankDto>> GetListAsync()
         {
-            return await _unitOfWork.BankRepository
+            return await _repository
                 .GetListAsync<BankDto, BankEntity, Guid>();
         }
 
         public async Task<BankDto> GetAsync(Guid id)
         {
-            return await _unitOfWork.BankRepository
+            return await _repository
                 .GetAsync<BankDto, BankEntity, Guid>(id);
         }
 
@@ -44,10 +44,8 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Business
         {
             var entity = _mapper.Map<IBankAddDto, BankEntity>(item);
 
-            entity = await _unitOfWork.BankRepository
+            entity = await _repository
                 .InsertAsync(entity);
-
-            await _unitOfWork.CommitAsync();
 
             return _mapper.Map<BankEntity, BankDto>(entity);
         }
@@ -61,7 +59,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Business
 
         private async Task<BankDto> EditInternalAsync(IBankEditDto item)
         {
-            var entity = await _unitOfWork.BankRepository
+            var entity = await _repository
                 .GetAsync(item.Id);
 
             if (entity == null)
@@ -71,20 +69,18 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Business
 
             _mapper.Map(item, entity);
 
-            entity = _unitOfWork.BankRepository.Update(entity);
-
-            await _unitOfWork.CommitAsync();
+            entity = await _repository.UpdateAsync(entity);
 
             return _mapper.Map<BankEntity, BankDto>(entity);
         }
 
         public async Task<bool> DeleteAsync(Guid id)
         {
-            _unitOfWork.BankRepository.Delete(id);
+            var entity = await _repository.GetAsync(id);
 
-            var result = await _unitOfWork.CommitAsync();
+            await _repository.DeleteAsync(entity);
 
-            return result == 1;
+            return true;
         }
     }
 }

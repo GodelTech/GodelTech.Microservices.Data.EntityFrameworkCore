@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using GodelTech.Data;
 using GodelTech.Data.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -53,6 +53,17 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
 
             // UnitOfWork
             services.AddScoped(typeof(TIUnitOfWork), typeof(TUnitOfWork));
+        }
+
+        /// <inheritdoc />
+        protected override void MigrateDatabase(IApplicationBuilder app)
+        {
+            if (app == null) throw new ArgumentNullException(nameof(app));
+
+            var dbContextFactory = app.ApplicationServices.GetRequiredService<IDbContextFactory<TDbContext>>();
+            using var dbContext = dbContextFactory.CreateDbContext();
+
+            dbContext.Database.Migrate();
         }
 
         /// <summary>

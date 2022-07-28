@@ -105,15 +105,6 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
         /// Migrate database.
         /// </summary>
         /// <param name="app">Application builder.</param>
-        protected virtual void MigrateDatabase(IApplicationBuilder app)
-        {
-            if (app == null) throw new ArgumentNullException(nameof(app));
-
-            var dbContextFactory = app.ApplicationServices.GetRequiredService<IDbContextFactory<TDbContext>>();
-
-            using var dbContext = dbContextFactory.CreateDbContext();
-
-            dbContext.Database.Migrate();
-        }
+        protected abstract void MigrateDatabase(IApplicationBuilder app);
     }
 }

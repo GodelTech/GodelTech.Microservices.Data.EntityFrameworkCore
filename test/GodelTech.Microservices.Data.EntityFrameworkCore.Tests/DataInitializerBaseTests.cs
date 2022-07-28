@@ -126,18 +126,5 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Tests
             mockSqlServerDbContextOptionsBuilder
                 .Verify(x => x.EnableRetryOnFailure(), Times.Once);
         }
-
-        [Fact]
-        public void MigrateDatabase_WhenApplicationBuilderIsNull_ThrowsArgumentNullException()
-        {
-            // Arrange
-            var initializer = new FakeDataInitializerBase(_configuration, _mockHostEnvironment.Object);
-
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(
-                () => initializer.ExposedMigrateDatabase(null)
-            );
-            Assert.Equal("app", exception.ParamName);
-        }
     }
 }

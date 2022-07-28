@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GodelTech.Data;
-using GodelTech.Data.EntityFrameworkCore;
+﻿using System.Collections.Generic;
 using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Core.Mvc;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Business;
@@ -33,12 +30,11 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple
 
             yield return new GenericInitializer(null, (app, _) => app.UseRouting());
 
-            yield return new DataInitializer<CurrencyExchangeRateDbContext, ICurrencyExchangeRateUnitOfWork, CurrencyExchangeRateUnitOfWork>(
+            yield return new SimpleDataInitializer<CurrencyExchangeRateDbContext>(
                     Configuration,
                     _hostingEnvironment,
                     options => Configuration.Bind("DataInitializerOptions", options)
                 )
-                .WithRepository<IRepository<BankEntity, Guid>, Repository<BankEntity, Guid>, BankEntity, Guid>()
                 .WithRepository<ICurrencyRepository, CurrencyRepository, CurrencyEntity, int>();
 
             yield return new GenericInitializer(services => services.AddTransient<IBankService, BankService>());
