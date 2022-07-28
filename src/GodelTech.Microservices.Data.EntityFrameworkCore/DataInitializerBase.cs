@@ -26,7 +26,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
         private readonly DataInitializerOptions _options = new DataInitializerOptions();
         private readonly Action<SqlServerDbContextOptionsBuilder> _sqlServerOptionsAction;
 
-        internal DataInitializerBase(
+        private protected DataInitializerBase(
             IConfiguration configuration,
             IHostEnvironment hostEnvironment,
             Action<DataInitializerOptions> configure = null,
