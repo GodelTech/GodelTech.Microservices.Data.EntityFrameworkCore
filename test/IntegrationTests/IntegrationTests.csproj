@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>IntegrationTests</AssemblyName>
+    <AssemblyName>GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests</AssemblyName>
     <RootNamespace>GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests</RootNamespace>
 
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
