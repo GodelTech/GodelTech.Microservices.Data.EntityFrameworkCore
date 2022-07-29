@@ -76,9 +76,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Business
 
         public async Task<bool> DeleteAsync(Guid id)
         {
-            var entity = await _repository.GetAsync(id);
-
-            await _repository.DeleteAsync(entity);
+            await _repository.DeleteAsync(id);
 
             return true;
         }
