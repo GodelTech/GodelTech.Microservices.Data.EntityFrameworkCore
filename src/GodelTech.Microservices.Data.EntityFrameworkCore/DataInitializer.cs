@@ -1,36 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using GodelTech.Data;
-using GodelTech.Data.AutoMapper;
 using GodelTech.Data.EntityFrameworkCore;
-using GodelTech.Microservices.Core;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-[assembly: CLSCompliant(false)]
 namespace GodelTech.Microservices.Data.EntityFrameworkCore
 {
     /// <summary>
     /// Data initializer.
     /// </summary>
 #pragma warning disable S2436 // Reduce the number of generic parameters in the 'DataInitializer' class to no more than the 2 authorized.
-    public class DataInitializer<TDbContext, TIUnitOfWork, TUnitOfWork> : MicroserviceInitializerBase
+    public class DataInitializer<TDbContext, TIUnitOfWork, TUnitOfWork> : DataInitializerBase<TDbContext>
 #pragma warning restore S2436 // Reduce the number of generic parameters in the 'DataInitializer' class to no more than the 2 authorized.
         where TDbContext : DbContext
         where TIUnitOfWork : IUnitOfWork
         where TUnitOfWork : UnitOfWork<TDbContext>, IUnitOfWork
     {
-        private readonly IHostEnvironment _hostEnvironment;
-        private readonly DataInitializerOptions _options = new DataInitializerOptions();
-        private readonly Action<SqlServerDbContextOptionsBuilder> _sqlServerOptionsAction;
-
-        private readonly IList<Action<IServiceCollection>> _configureServicesList = new List<Action<IServiceCollection>>();
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DataInitializer{TDbContext, TIUnitOfWork, TUnitOfWork}"/> class.
         /// </summary>
@@ -43,53 +32,38 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
             IHostEnvironment hostEnvironment,
             Action<DataInitializerOptions> configure = null,
             Action<SqlServerDbContextOptionsBuilder> sqlServerOptionsAction = null)
-            : base(configuration)
+            : base(
+                configuration,
+                hostEnvironment,
+                configure,
+                sqlServerOptionsAction)
         {
-            _hostEnvironment = hostEnvironment;
-            configure?.Invoke(_options);
-            _sqlServerOptionsAction = sqlServerOptionsAction;
+
         }
 
         /// <inheritdoc />
         public override void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddHealthChecks()
-                .AddSqlServer(Configuration.GetConnectionString(_options.ConnectionStringName), name: _options.SqlServerHealthCheckName);
-
-            // AutoMapper
-            services.AddAutoMapper(typeof(TDbContext).Assembly);
-
-            // GodelTech.Data.AutoMapper
-            services.AddScoped<IDataMapper, DataMapper>();
+            base.ConfigureServices(services);
 
             services
                 .AddDbContextFactory<TDbContext>(
-                    options => options
-                        .UseSqlServer(
-                            Configuration.GetConnectionString(_options.ConnectionStringName),
-                            ConfigureSqlServerDbContextOptionsBuilder
-                        )
-                        .EnableSensitiveDataLogging(_hostEnvironment.IsDevelopment())
+                    ConfigureDbContextOptionsBuilder
                 );
-
-            // Repositories
-            foreach (var action in _configureServicesList)
-            {
-                action.Invoke(services);
-            }
 
             // UnitOfWork
             services.AddScoped(typeof(TIUnitOfWork), typeof(TUnitOfWork));
         }
 
         /// <inheritdoc />
-        public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        protected override void MigrateDatabase(IApplicationBuilder app)
         {
-            if (_options.EnableDatabaseMigration)
-            {
-                MigrateDatabase(app);
-            }
+            if (app == null) throw new ArgumentNullException(nameof(app));
+
+            var dbContextFactory = app.ApplicationServices.GetRequiredService<IDbContextFactory<TDbContext>>();
+            using var dbContext = dbContextFactory.CreateDbContext();
+
+            dbContext.Database.Migrate();
         }
 
         /// <summary>
@@ -107,7 +81,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
             where TRepository : Repository<TEntity, TKey>, TIRepository
             where TEntity : class, IEntity<TKey>
         {
-            _configureServicesList.Add(
+            ConfigureServicesList.Add(
                 services => services
                     .AddScoped<Func<TDbContext, TIRepository>>(
                         provider =>
@@ -125,34 +99,6 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
             );
 
             return this;
-        }
-
-        /// <summary>
-        /// Configure SqlServerDbContextOptionsBuilder.
-        /// </summary>
-        /// <param name="options">SqlServerDbContextOptionsBuilder.</param>
-        protected virtual void ConfigureSqlServerDbContextOptionsBuilder(SqlServerDbContextOptionsBuilder options)
-        {
-            if (options == null) throw new ArgumentNullException(nameof(options));
-
-            _sqlServerOptionsAction?.Invoke(options);
-
-            options.EnableRetryOnFailure();
-        }
-
-        /// <summary>
-        /// Migrate database.
-        /// </summary>
-        /// <param name="app">Application builder.</param>
-        protected virtual void MigrateDatabase(IApplicationBuilder app)
-        {
-            if (app == null) throw new ArgumentNullException(nameof(app));
-
-            var dbContextFactory = app.ApplicationServices.GetRequiredService<IDbContextFactory<TDbContext>>();
-
-            using var dbContext = dbContextFactory.CreateDbContext();
-
-            dbContext.Database.Migrate();
         }
     }
 }

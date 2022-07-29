@@ -5,6 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
+    <AssemblyName>GodelTech.Microservices.Data.EntityFrameworkCore.Tests</AssemblyName>
+    <RootNamespace>GodelTech.Microservices.Data.EntityFrameworkCore.Tests</RootNamespace>
+
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
 
     <!-- SonarQube needs this -->
