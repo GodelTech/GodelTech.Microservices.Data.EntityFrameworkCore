@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Tests.Fakes;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +45,31 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Tests
         {
             // Arrange & Act & Assert
             Assert.Empty(_initializer.ExposedConfigureServicesList);
+        }
+
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        public void Configure_RunMigrations(bool enableDatabaseMigration, bool expectedResult)
+        {
+            // Arrange
+            var invoked = false;
+
+            var initializer = new FakeDataInitializerBase(
+                _configuration,
+                _mockHostEnvironment.Object,
+                options => options.EnableDatabaseMigration = enableDatabaseMigration,
+                migrateDatabaseAction: _ => invoked = true
+            );
+
+            var mockApplicationBuilder = new Mock<IApplicationBuilder>(MockBehavior.Strict);
+            var mockWebHostEnvironment = new Mock<IWebHostEnvironment>(MockBehavior.Strict);
+
+            // Act
+            initializer.Configure(mockApplicationBuilder.Object, mockWebHostEnvironment.Object);
+
+            // Assert
+            Assert.Equal(expectedResult, invoked);
         }
 
         [Fact]
