@@ -35,15 +35,15 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="GodelTech.Data.AutoMapper" Version="6.3.0" />
-    <PackageReference Include="GodelTech.Data.EntityFrameworkCore" Version="6.3.2" />
+    <PackageReference Include="GodelTech.Data.EntityFrameworkCore" Version="6.3.3" />
     <PackageReference Include="GodelTech.Microservices.Core" Version="2.5.0" />
 
     <!-- Source Link needs this -->
