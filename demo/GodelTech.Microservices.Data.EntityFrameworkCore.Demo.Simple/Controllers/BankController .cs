@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Business.Contracts;
@@ -24,11 +25,11 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Controlle
 
         [HttpGet]
         [ProducesResponseType(typeof(IList<BankModel>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetListAsync()
+        public async Task<IActionResult> GetListAsync(CancellationToken cancellationToken)
         {
             return Ok(
                 _mapper.Map<IList<BankModel>>(
-                    await _bankService.GetListAsync()
+                    await _bankService.GetListAsync(cancellationToken)
                 )
             );
         }
@@ -37,9 +38,9 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Controlle
         [ActionName(nameof(GetAsync))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(BankModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAsync(Guid id)
+        public async Task<IActionResult> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            var item = await _bankService.GetAsync(id);
+            var item = await _bankService.GetAsync(id, cancellationToken);
 
             if (item == null)
             {
@@ -53,10 +54,10 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Controlle
 
         [HttpPost]
         [ProducesResponseType(typeof(BankModel), StatusCodes.Status201Created)]
-        public async Task<IActionResult> PostAsync([FromBody] BankPostModel model)
+        public async Task<IActionResult> PostAsync([FromBody] BankPostModel model, CancellationToken cancellationToken)
         {
             var item = _mapper.Map<BankModel>(
-                await _bankService.AddAsync(model)
+                await _bankService.AddAsync(model, cancellationToken)
             );
 
             return CreatedAtAction(
@@ -70,21 +71,21 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Controlle
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public Task<IActionResult> PutAsync(Guid id, BankPutModel model)
+        public Task<IActionResult> PutAsync(Guid id, BankPutModel model, CancellationToken cancellationToken)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
-            return PutInternalAsync(id, model);
+            return PutInternalAsync(id, model, cancellationToken);
         }
 
-        private async Task<IActionResult> PutInternalAsync(Guid id, BankPutModel model)
+        private async Task<IActionResult> PutInternalAsync(Guid id, BankPutModel model, CancellationToken cancellationToken)
         {
             if (id != model.Id)
             {
                 return BadRequest();
             }
 
-            var item = await _bankService.EditAsync(model);
+            var item = await _bankService.EditAsync(model, cancellationToken);
 
             if (item == null)
             {
@@ -97,9 +98,9 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Controlle
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> DeleteAsync(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
-            var result = await _bankService.DeleteAsync(id);
+            var result = await _bankService.DeleteAsync(id, cancellationToken);
 
             if (!result)
             {
