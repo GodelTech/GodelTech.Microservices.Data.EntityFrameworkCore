@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GodelTech.Data;
@@ -21,48 +22,48 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Business
             _mapper = mapper;
         }
 
-        public async Task<IList<BankDto>> GetListAsync()
+        public async Task<IList<BankDto>> GetListAsync(CancellationToken cancellationToken)
         {
             return await _unitOfWork.BankRepository
-                .GetListAsync<BankDto, BankEntity, Guid>();
+                .GetListAsync<BankDto, BankEntity, Guid>(cancellationToken: cancellationToken);
         }
 
-        public async Task<BankDto> GetAsync(Guid id)
+        public async Task<BankDto> GetAsync(Guid id, CancellationToken cancellationToken)
         {
             return await _unitOfWork.BankRepository
-                .GetAsync<BankDto, BankEntity, Guid>(id);
+                .GetAsync<BankDto, BankEntity, Guid>(id, cancellationToken);
         }
 
-        public Task<BankDto> AddAsync(IBankAddDto item)
+        public Task<BankDto> AddAsync(IBankAddDto item, CancellationToken cancellationToken)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
-            return AddInternalAsync(item);
+            return AddInternalAsync(item, cancellationToken);
         }
 
-        private async Task<BankDto> AddInternalAsync(IBankAddDto item)
+        private async Task<BankDto> AddInternalAsync(IBankAddDto item, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<IBankAddDto, BankEntity>(item);
 
             entity = await _unitOfWork.BankRepository
-                .InsertAsync(entity);
+                .InsertAsync(entity, cancellationToken);
 
-            await _unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return _mapper.Map<BankEntity, BankDto>(entity);
         }
 
-        public Task<BankDto> EditAsync(IBankEditDto item)
+        public Task<BankDto> EditAsync(IBankEditDto item, CancellationToken cancellationToken)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
-            return EditInternalAsync(item);
+            return EditInternalAsync(item, cancellationToken);
         }
 
-        private async Task<BankDto> EditInternalAsync(IBankEditDto item)
+        private async Task<BankDto> EditInternalAsync(IBankEditDto item, CancellationToken cancellationToken)
         {
             var entity = await _unitOfWork.BankRepository
-                .GetAsync(item.Id);
+                .GetAsync(item.Id, cancellationToken);
 
             if (entity == null)
             {
@@ -73,16 +74,16 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Business
 
             entity = _unitOfWork.BankRepository.Update(entity);
 
-            await _unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return _mapper.Map<BankEntity, BankDto>(entity);
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
             _unitOfWork.BankRepository.Delete(id);
 
-            var result = await _unitOfWork.CommitAsync();
+            var result = await _unitOfWork.CommitAsync(cancellationToken);
 
             return result == 1;
         }
