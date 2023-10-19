@@ -9,15 +9,15 @@ using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Models.Bank;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests.Simple
+namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
 {
     public sealed class SimpleDataInitializerTests : IDisposable
     {
-        private readonly AppTestFixture _fixture;
+        private readonly SimpleAppTestFixture _fixture;
 
         public SimpleDataInitializerTests(ITestOutputHelper output)
         {
-            _fixture = new AppTestFixture
+            _fixture = new SimpleAppTestFixture
             {
                 Output = output
             };

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace GodelTech.Microservices.Data.EntityFrameworkCore.Tests.Fakes
+namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests.Fakes
 {
     public class FakeDataInitializer : DataInitializer<DbContext, IUnitOfWork, FakeUnitOfWork>
     {

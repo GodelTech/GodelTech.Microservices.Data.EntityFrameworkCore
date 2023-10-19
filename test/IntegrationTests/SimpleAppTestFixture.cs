@@ -12,13 +12,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests.Simple
+namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
 {
-    public class AppTestFixture : WebApplicationFactory<Startup>
+    public class SimpleAppTestFixture : WebApplicationFactory<Startup>
     {
         private readonly Guid _guid;
 
-        public AppTestFixture()
+        public SimpleAppTestFixture()
         {
             _guid = Guid.NewGuid();
 
