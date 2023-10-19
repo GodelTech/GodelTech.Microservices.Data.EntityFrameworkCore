@@ -21,8 +21,6 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
             {
                 Output = output
             };
-
-            Seed();
         }
 
         public void Dispose()
@@ -50,9 +48,11 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
         public async Task Configure_Success()
         {
             // Arrange
-            var expectedResult = _fixture.DbContext.Set<BankEntity>().ToList();
-
             var client = _fixture.CreateClient();
+
+            Seed();
+
+            var expectedResult = _fixture.DbContext.Set<BankEntity>().ToList();
 
             // Act
             var result = await client.GetAsync(new Uri("/banks", UriKind.Relative));

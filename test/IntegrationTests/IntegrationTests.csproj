@@ -16,12 +16,12 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.23" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.23" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.12" />
   </ItemGroup>
 
   <ItemGroup>
