@@ -41,7 +41,13 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo
                 .WithRepository<IRepository<BankEntity, Guid>, Repository<BankEntity, Guid>, BankEntity, Guid>()
                 .WithRepository<ICurrencyRepository, CurrencyRepository, CurrencyEntity, int>();
 
-            yield return new GenericInitializer(services => services.AddTransient<IBankService, BankService>());
+            yield return new GenericInitializer(
+                services =>
+                {
+                    services.AddTransient<IBankService, BankService>();
+                    services.AddTransient<ICurrencyService, CurrencyService>();
+                }
+            );
 
             yield return new ApiInitializer();
 

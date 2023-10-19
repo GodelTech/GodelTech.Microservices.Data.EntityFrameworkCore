@@ -68,5 +68,21 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                 Assert.Equal(expectedResult[i].Name, resultValue[i].Name);
             }
         }
+
+        [Fact]
+        public async Task WithRepository_Success()
+        {
+            // Arrange
+            var client = _fixture.CreateClient();
+
+            // Act
+            var result = await client.GetAsync(new Uri("/currencies/count", UriKind.Relative));
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+
+            var resultValue = await result.Content.ReadFromJsonAsync<int>();
+            Assert.Equal(0, resultValue);
+        }
     }
 }
