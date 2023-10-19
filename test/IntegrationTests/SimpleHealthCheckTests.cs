@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests.Simple
+namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
 {
-    public sealed class HealthCheckTests : IDisposable
+    public sealed class SimpleHealthCheckTests : IDisposable
     {
-        private readonly AppTestFixture _fixture;
+        private readonly SimpleAppTestFixture _fixture;
 
-        public HealthCheckTests(ITestOutputHelper output)
+        public SimpleHealthCheckTests(ITestOutputHelper output)
         {
-            _fixture = new AppTestFixture
+            _fixture = new SimpleAppTestFixture
             {
                 Output = output
             };

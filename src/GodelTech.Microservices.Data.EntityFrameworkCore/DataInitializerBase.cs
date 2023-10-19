@@ -48,7 +48,10 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
         {
             services
                 .AddHealthChecks()
-                .AddSqlServer(Configuration.GetConnectionString(_options.ConnectionStringName), name: _options.SqlServerHealthCheckName);
+                .AddSqlServer(
+                    Configuration.GetConnectionString(_options.ConnectionStringName),
+                    name: _options.SqlServerHealthCheckName
+                );
 
             // AutoMapper
             services.AddAutoMapper(typeof(TDbContext).Assembly);

@@ -21,8 +21,6 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
             {
                 Output = output
             };
-
-            Seed();
         }
 
         public void Dispose()
@@ -50,9 +48,11 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
         public async Task Configure_Success()
         {
             // Arrange
-            var expectedResult = _fixture.DbContext.Set<BankEntity>().ToList();
-
             var client = _fixture.CreateClient();
+
+            Seed();
+
+            var expectedResult = _fixture.DbContext.Set<BankEntity>().ToList();
 
             // Act
             var result = await client.GetAsync(new Uri("/banks", UriKind.Relative));
@@ -67,6 +67,22 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                 Assert.Equal(expectedResult[i].Id, resultValue[i].Id);
                 Assert.Equal(expectedResult[i].Name, resultValue[i].Name);
             }
+        }
+
+        [Fact]
+        public async Task WithRepository_Success()
+        {
+            // Arrange
+            var client = _fixture.CreateClient();
+
+            // Act
+            var result = await client.GetAsync(new Uri("/currencies/count", UriKind.Relative));
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+
+            var resultValue = await result.Content.ReadFromJsonAsync<int>();
+            Assert.Equal(0, resultValue);
         }
     }
 }

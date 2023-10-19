@@ -1,4 +1,5 @@
 ﻿using System;
+using GodelTech.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -7,9 +8,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace GodelTech.Microservices.Data.EntityFrameworkCore.Tests.Fakes
 {
-    public class FakeSimpleDataInitializer : SimpleDataInitializer<DbContext>
+    public class FakeDataInitializer : DataInitializer<DbContext, IUnitOfWork, FakeUnitOfWork>
     {
-        public FakeSimpleDataInitializer(
+        public FakeDataInitializer(
             IConfiguration configuration, IHostEnvironment hostEnvironment,
             Action<DataInitializerOptions> configure = null,
             Action<SqlServerDbContextOptionsBuilder> sqlServerOptionsAction = null)
