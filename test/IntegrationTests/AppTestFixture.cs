@@ -28,7 +28,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
             _guid = Guid.NewGuid();
 
             _sqliteConnection = new SqliteConnection($"Data Source=InMemory{_guid};Mode=Memory;Cache=Shared");
-            _sqliteConnection.CreateFunction("newsequentialid", () => Guid.NewGuid());
+            _sqliteConnection.CreateFunction("newsequentialid", Guid.NewGuid);
             _sqliteConnection.Open();
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<CurrencyExchangeRateDbContext>();

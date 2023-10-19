@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using System.Threading;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Business.Contracts
 {
