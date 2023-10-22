@@ -26,7 +26,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data.Configurati
 
             // Properties
             builder.Property(x => x.Id).HasDefaultValueSql("newsequentialid()");
-            builder.Property(x => x.Name).HasColumnType("nvarchar(256)").IsRequired();
+            builder.Property(x => x.Name).HasColumnType("nvarchar(255)").IsRequired();
         }
     }
 }
