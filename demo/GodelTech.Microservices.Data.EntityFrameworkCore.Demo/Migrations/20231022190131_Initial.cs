@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Migrations
+#nullable disable
+
+namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Migrations
 {
     public partial class Initial : Migration
     {
@@ -16,7 +18,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Migration
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newsequentialid()"),
-                    Name = table.Column<string>(type: "nvarchar(256)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(255)", nullable: false)
                 },
                 constraints: table =>
                 {
