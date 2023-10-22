@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data;
@@ -18,42 +19,28 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
 {
     public class AppTestFixture : WebApplicationFactory<Startup>
     {
-        private bool _disposed;
+        public ITestOutputHelper Output { get; set; }
 
-        private readonly Guid _guid;
-        private readonly SqliteConnection _sqliteConnection;
-
-        public AppTestFixture()
+        public CurrencyExchangeRateDbContext GetDbContext()
         {
-            _guid = Guid.NewGuid();
+            using var scope = Services.CreateScope();
 
-            _sqliteConnection = new SqliteConnection($"Data Source=InMemory{_guid};Mode=Memory;Cache=Shared");
-            _sqliteConnection.CreateFunction("newsequentialid", Guid.NewGuid);
-            _sqliteConnection.Open();
+            var dbContextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<CurrencyExchangeRateDbContext>>();
 
-            var dbContextOptionsBuilder = new DbContextOptionsBuilder<CurrencyExchangeRateDbContext>();
+            var dbContext = dbContextFactory.CreateDbContext();
 
-            ConfigureDbContextOptionsBuilder(dbContextOptionsBuilder);
+            dbContext.Database.EnsureCreated();
 
-            DbContext = new CurrencyExchangeRateDbContext(dbContextOptionsBuilder.Options);
+            return dbContext;
         }
 
-        public ITestOutputHelper Output { get; set; }
-        public CurrencyExchangeRateDbContext DbContext { get; }
-
-        protected override void Dispose(bool disposing)
+        public CurrencyExchangeRateDbContext InitializeDbContextForTest(Action<CurrencyExchangeRateDbContext> seed)
         {
-            if (!_disposed)
-            {
-                DbContext.Dispose();
+            var dbContext = GetDbContext();
 
-                _sqliteConnection.Close();
-                _sqliteConnection.Dispose();
+            seed?.Invoke(dbContext);
 
-                _disposed = true;
-            }
-
-            base.Dispose(disposing);
+            return dbContext;
         }
 
         protected override IHostBuilder CreateHostBuilder()
@@ -86,7 +73,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                                 {
                                     new KeyValuePair<string, string>(
                                         "ConnectionStrings:DefaultConnection",
-                                        $"Data Source=InMemory{_guid};Mode=Memory;Cache=Shared"
+                                        "DataSource=:memory:"
                                     ),
                                     new KeyValuePair<string, string>(
                                         "DataInitializerOptions:EnableDatabaseMigration",
@@ -112,18 +99,32 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                         services.Remove(genericOptionsDescriptor);
                         services.Remove(optionsDescriptor);
 
+                        // Create open SqliteConnection so EF won't automatically close it.
+                        services.AddSingleton<DbConnection>(
+                            _ =>
+                            {
+                                var connection = new SqliteConnection("DataSource=:memory:");
+
+                                connection.CreateFunction("newsequentialid", Guid.NewGuid);
+
+                                connection.Open();
+
+                                return connection;
+                            }
+                        );
+
                         services.AddDbContextFactory<CurrencyExchangeRateDbContext>(
-                            ConfigureDbContextOptionsBuilder
+                            (provider, optionsBuilder) =>
+                            {
+                                var connection = provider.GetRequiredService<DbConnection>();
+
+                                optionsBuilder
+                                    .UseSqlite(connection)
+                                    .EnableSensitiveDataLogging();
+                            }
                         );
                     }
                 );
-        }
-
-        private void ConfigureDbContextOptionsBuilder(DbContextOptionsBuilder builder)
-        {
-            builder
-                .UseSqlite(_sqliteConnection)
-                .EnableSensitiveDataLogging();
         }
     }
 }
