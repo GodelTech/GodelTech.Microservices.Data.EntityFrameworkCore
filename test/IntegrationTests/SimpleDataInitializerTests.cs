@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Data;
@@ -16,6 +17,9 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
     public sealed class SimpleDataInitializerTests : IDisposable
     {
         private readonly SimpleAppTestFixture _fixture;
+        private readonly IServiceScope _scope;
+        private readonly CurrencyExchangeRateDbContext _dbContext;
+        private readonly HttpClient _client;
 
         public SimpleDataInitializerTests(ITestOutputHelper output)
         {
@@ -23,16 +27,27 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
             {
                 Output = output
             };
+
+            _scope = _fixture.Services.CreateScope();
+            _dbContext = _scope.ServiceProvider.GetRequiredService<CurrencyExchangeRateDbContext>();
+            _dbContext.Database.EnsureCreated();
+
+            Seed();
+
+            _client = _fixture.CreateClient();
         }
 
         public void Dispose()
         {
+            _client.Dispose();
+            _dbContext.Dispose();
+            _scope.Dispose();
             _fixture.Dispose();
         }
 
-        private static void Seed(CurrencyExchangeRateDbContext dbContext)
+        private void Seed()
         {
-            dbContext.Set<BankEntity>().AddRange(
+            _dbContext.Set<BankEntity>().AddRange(
                 new BankEntity
                 {
                     Name = "First Bank Name"
@@ -43,22 +58,17 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
                 }
             );
 
-            dbContext.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
         [Fact]
         public async Task Configure_Success()
         {
             // Arrange
-            var client = _fixture.CreateClient();
-
-            using var scope = _fixture.Services.CreateScope();
-            await using var dbContext = SimpleAppTestFixture.InitializeDbContextForTest(scope, Seed);
-
-            var expectedResult = dbContext.Set<BankEntity>().ToList();
+            var expectedResult = _dbContext.Set<BankEntity>().ToList();
 
             // Act
-            var result = await client.GetAsync(new Uri("/banks", UriKind.Relative));
+            var result = await _client.GetAsync(new Uri("/banks", UriKind.Relative));
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
@@ -75,11 +85,8 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
         [Fact]
         public async Task WithRepository_Success()
         {
-            // Arrange
-            var client = _fixture.CreateClient();
-
-            // Act
-            var result = await client.GetAsync(new Uri("/currencies/count", UriKind.Relative));
+            // Arrange & Act
+            var result = await _client.GetAsync(new Uri("/currencies/count", UriKind.Relative));
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);

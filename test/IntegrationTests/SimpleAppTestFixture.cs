@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple;
 using GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Data;
@@ -20,24 +19,6 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
     public class SimpleAppTestFixture : WebApplicationFactory<Startup>
     {
         public ITestOutputHelper Output { get; set; }
-
-        public static CurrencyExchangeRateDbContext GetDbContext([NotNull] IServiceScope scope)
-        {
-            var dbContext = scope.ServiceProvider.GetRequiredService<CurrencyExchangeRateDbContext>();
-
-            dbContext.Database.EnsureCreated();
-
-            return dbContext;
-        }
-
-        public static CurrencyExchangeRateDbContext InitializeDbContextForTest(IServiceScope scope, Action<CurrencyExchangeRateDbContext> seed)
-        {
-            var dbContext = GetDbContext(scope);
-
-            seed?.Invoke(dbContext);
-
-            return dbContext;
-        }
 
         protected override IHostBuilder CreateHostBuilder()
         {
