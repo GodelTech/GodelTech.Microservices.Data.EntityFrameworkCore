@@ -16,7 +16,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Data.Conf
 
         public override void Configure(EntityTypeBuilder<CurrencyEntity> builder)
         {
-            if (builder == null) throw new ArgumentNullException(nameof(builder));
+            ArgumentNullException.ThrowIfNull(builder);
 
             // Table
             builder.ToTable("Currency", SchemaName);

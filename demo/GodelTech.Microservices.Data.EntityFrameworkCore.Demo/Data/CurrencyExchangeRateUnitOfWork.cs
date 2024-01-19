@@ -15,8 +15,8 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Data
             IDbContextFactory<CurrencyExchangeRateDbContext> dbContextFactory)
             : base(dbContextFactory)
         {
-            if (bankRepository == null) throw new ArgumentNullException(nameof(bankRepository));
-            if (currencyRepository == null) throw new ArgumentNullException(nameof(currencyRepository));
+            ArgumentNullException.ThrowIfNull(bankRepository);
+            ArgumentNullException.ThrowIfNull(currencyRepository);
 
             RegisterRepository(bankRepository(DbContext));
             RegisterRepository(currencyRepository(DbContext));

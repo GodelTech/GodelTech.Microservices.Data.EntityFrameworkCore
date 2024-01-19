@@ -81,7 +81,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
         /// <param name="options">DbContextOptionsBuilder.</param>
         protected virtual void ConfigureDbContextOptionsBuilder(DbContextOptionsBuilder options)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
+            ArgumentNullException.ThrowIfNull(options);
 
             options
                 .UseSqlServer(
@@ -97,7 +97,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
         /// <param name="options">SqlServerDbContextOptionsBuilder.</param>
         protected virtual void ConfigureSqlServerDbContextOptionsBuilder(SqlServerDbContextOptionsBuilder options)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
+            ArgumentNullException.ThrowIfNull(options);
 
             _sqlServerOptionsAction?.Invoke(options);
 
