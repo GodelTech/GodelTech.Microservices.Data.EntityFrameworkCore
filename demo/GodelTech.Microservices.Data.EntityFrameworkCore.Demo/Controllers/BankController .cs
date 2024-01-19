@@ -73,7 +73,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public Task<IActionResult> PutAsync(Guid id, BankPutModel model, CancellationToken cancellationToken)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             return PutInternalAsync(id, model, cancellationToken);
         }

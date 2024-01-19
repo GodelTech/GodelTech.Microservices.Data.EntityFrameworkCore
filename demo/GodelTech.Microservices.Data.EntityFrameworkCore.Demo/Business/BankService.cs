@@ -36,7 +36,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Business
 
         public Task<BankDto> AddAsync(IBankAddDto item, CancellationToken cancellationToken)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            ArgumentNullException.ThrowIfNull(item);
 
             return AddInternalAsync(item, cancellationToken);
         }
@@ -55,7 +55,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Business
 
         public Task<BankDto> EditAsync(IBankEditDto item, CancellationToken cancellationToken)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            ArgumentNullException.ThrowIfNull(item);
 
             return EditInternalAsync(item, cancellationToken);
         }

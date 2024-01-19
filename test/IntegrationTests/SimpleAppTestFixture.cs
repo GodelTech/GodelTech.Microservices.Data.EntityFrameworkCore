@@ -37,7 +37,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore.IntegrationTests
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            if (builder == null) throw new ArgumentNullException(nameof(builder));
+            ArgumentNullException.ThrowIfNull(builder);
 
             builder
                 .UseSetting("https_port", "8080")

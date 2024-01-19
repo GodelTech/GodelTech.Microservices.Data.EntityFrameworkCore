@@ -52,7 +52,7 @@ namespace GodelTech.Microservices.Data.EntityFrameworkCore
         /// <inheritdoc />
         protected override void MigrateDatabase(IApplicationBuilder app)
         {
-            if (app == null) throw new ArgumentNullException(nameof(app));
+            ArgumentNullException.ThrowIfNull(app);
 
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             using var dbContext = serviceScope.ServiceProvider.GetRequiredService<TDbContext>();
