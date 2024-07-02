@@ -1,8 +1,8 @@
-﻿using GodelTech.Data.EntityFrameworkCore;
+﻿using GodelTech.Data;
 
 namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Data.Entities
 {
-    public class CurrencyEntity : EntityNoneDatabaseGeneratedIdentifier<int>
+    public class CurrencyEntity : Entity<int>
     {
         public string AlphabeticCode { get; set; }
     }

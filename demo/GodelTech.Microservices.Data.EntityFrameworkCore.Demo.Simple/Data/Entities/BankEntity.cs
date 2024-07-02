@@ -1,5 +1,5 @@
 ﻿using System;
-using GodelTech.Data.EntityFrameworkCore;
+using GodelTech.Data;
 
 namespace GodelTech.Microservices.Data.EntityFrameworkCore.Demo.Simple.Data.Entities
 {
