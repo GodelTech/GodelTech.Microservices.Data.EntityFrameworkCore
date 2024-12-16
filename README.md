@@ -1,5 +1,7 @@
 # GodelTech.Microservices.Data.EntityFrameworkCore
-Microservice initializer for [GodelTech.Data.EntityFrameworkCore](https://github.com/GodelTech/GodelTech.Data.EntityFrameworkCore)
+
+# Description
+GodelTech.Microservices.Data.EntityFrameworkCore is a .NET library that serves as a microservice initializer for [GodelTech.Data.EntityFrameworkCore](https://github.com/GodelTech/GodelTech.Data.EntityFrameworkCore). It provides features for setting up repositories with or without the Unit of Work pattern.
 
 For Repository with Unit of Work use:
 ```c#
@@ -21,3 +23,6 @@ yield return new SimpleDataInitializer<CurrencyExchangeRateDbContext>(
     )
     .WithRepository<ICurrencyRepository, CurrencyRepository, CurrencyEntity, int>();
 ```
+
+# License
+This project is licensed under the MIT License. See the LICENSE file for more details.
