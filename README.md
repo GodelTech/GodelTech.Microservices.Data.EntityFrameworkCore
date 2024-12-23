@@ -24,5 +24,5 @@ yield return new SimpleDataInitializer<CurrencyExchangeRateDbContext>(
     .WithRepository<ICurrencyRepository, CurrencyRepository, CurrencyEntity, int>();
 ```
 
-# License
+## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
