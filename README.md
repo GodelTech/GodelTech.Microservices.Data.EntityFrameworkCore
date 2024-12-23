@@ -1,6 +1,6 @@
 # GodelTech.Microservices.Data.EntityFrameworkCore
 
-# Description
+## Description
 GodelTech.Microservices.Data.EntityFrameworkCore is a .NET library that serves as a microservice initializer for [GodelTech.Data.EntityFrameworkCore](https://github.com/GodelTech/GodelTech.Data.EntityFrameworkCore). It provides features for setting up repositories with or without the Unit of Work pattern.
 
 For Repository with Unit of Work use:
